@@ -1,0 +1,2256 @@
+{
+	"info": {
+		"_postman_id": "library-complete-api-2025",
+		"name": "Library Management Complete API - 2025",
+		"description": "Comprehensive API collection for the fully refactored Library Management System with all endpoints, authentication, and proper request examples",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "library-management"
+	},
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{auth_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080",
+			"type": "string",
+			"description": "Base URL for the Library Management API"
+		},
+		{
+			"key": "auth_token",
+			"value": "",
+			"type": "string",
+			"description": "JWT Authentication token - will be set after login"
+		}
+	],
+	"item": [
+		{
+			"name": "🔐 Authentication",
+			"description": "Authentication endpoints for login, registration, and profile management",
+			"item": [
+				{
+					"name": "Register User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    if (response.token) {",
+									"        pm.collectionVariables.set('auth_token', response.token);",
+									"        console.log('Token set:', response.token);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"admin\",\n    \"email\": \"admin@library.com\",\n    \"password\": \"admin123\",\n    \"firstName\": \"Admin\",\n    \"lastName\": \"User\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/register",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "register"]
+						},
+						"description": "Register a new user account"
+					}
+				},
+				{
+					"name": "Login User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    if (response.token) {",
+									"        pm.collectionVariables.set('auth_token', response.token);",
+									"        console.log('Token set:', response.token);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"admin123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/login",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "login"]
+						},
+						"description": "Login with existing credentials"
+					}
+				},
+				{
+					"name": "Get User Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/auth/profile",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "profile"]
+						},
+						"description": "Get current user profile information"
+					}
+				}
+			]
+		},
+		{
+			"name": "📚 Books Management",
+			"description": "Complete book management including CRUD operations and search",
+			"item": [
+				{
+					"name": "Get All Books",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/books?page=0&pageSize=10",
+							"host": ["{{base_url}}"],
+							"path": ["api", "books"],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Get paginated list of all books"
+					}
+				},
+				{
+					"name": "Get Book by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/books/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "books", "1"]
+						},
+						"description": "Get specific book by ID"
+					}
+				},
+				{
+					"name": "Create Book",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"New Test Book\",\n    \"isbn\": \"978-0-123456-78-9\",\n    \"description\": \"A comprehensive test book for the library system\",\n    \"language\": \"English\",\n    \"pageCount\": 350,\n    \"authorId\": 1,\n    \"publisherId\": 1,\n    \"categoryId\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/books",
+							"host": ["{{base_url}}"],
+							"path": ["api", "books"]
+						},
+						"description": "Create a new book"
+					}
+				},
+				{
+					"name": "Update Book",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Updated Book Title\",\n    \"description\": \"Updated description for the book\",\n    \"pageCount\": 400\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/books/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "books", "1"]
+						},
+						"description": "Update an existing book"
+					}
+				},
+				{
+					"name": "Delete Book",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/books/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "books", "1"]
+						},
+						"description": "Delete a book"
+					}
+				},
+				{
+					"name": "Search Books",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/books/search?query=java&category=1&author=1&publisher=1&language=English&page=0&pageSize=10",
+							"host": ["{{base_url}}"],
+							"path": ["api", "books", "search"],
+							"query": [
+								{
+									"key": "query",
+									"value": "java",
+									"description": "Search term"
+								},
+								{
+									"key": "category",
+									"value": "1",
+									"description": "Category ID filter"
+								},
+								{
+									"key": "author",
+									"value": "1",
+									"description": "Author ID filter"
+								},
+								{
+									"key": "publisher",
+									"value": "1",
+									"description": "Publisher ID filter"
+								},
+								{
+									"key": "language",
+									"value": "English",
+									"description": "Language filter"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Search books with multiple filters"
+					}
+				},
+				{
+					"name": "Get Book Reviews",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/books/1/reviews?page=0&pageSize=10",
+							"host": ["{{base_url}}"],
+							"path": ["api", "books", "1", "reviews"],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Get reviews for a specific book"
+					}
+				},
+				{
+					"name": "Get Book Review Summary",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/books/1/reviews/summary",
+							"host": ["{{base_url}}"],
+							"path": ["api", "books", "1", "reviews", "summary"]
+						},
+						"description": "Get review summary for a specific book"
+					}
+				}
+			]
+		},
+		{
+			"name": "✍️ Authors Management",
+			"description": "Author management endpoints",
+			"item": [
+				{
+					"name": "Get All Authors",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/authors?page=0&pageSize=10",
+							"host": ["{{base_url}}"],
+							"path": ["api", "authors"],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Get paginated list of all authors"
+					}
+				},
+				{
+					"name": "Get Author by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/authors/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "authors", "1"]
+						},
+						"description": "Get specific author by ID"
+					}
+				},
+				{
+					"name": "Create Author",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"New Author\",\n    \"biography\": \"A talented author with extensive experience in software development and technical writing.\",\n    \"nationality\": \"American\",\n    \"website\": \"https://newauthor.com\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/authors",
+							"host": ["{{base_url}}"],
+							"path": ["api", "authors"]
+						},
+						"description": "Create a new author"
+					}
+				},
+				{
+					"name": "Update Author",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Updated Author Name\",\n    \"biography\": \"Updated biography text\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/authors/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "authors", "1"]
+						},
+						"description": "Update an existing author"
+					}
+				},
+				{
+					"name": "Delete Author",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/authors/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "authors", "1"]
+						},
+						"description": "Delete an author"
+					}
+				}
+			]
+		},
+		{
+			"name": "🏢 Publishers Management",
+			"description": "Publisher management endpoints",
+			"item": [
+				{
+					"name": "Get All Publishers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/publishers?page=0&pageSize=10",
+							"host": ["{{base_url}}"],
+							"path": ["api", "publishers"],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Get paginated list of all publishers"
+					}
+				},
+				{
+					"name": "Get Publisher by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/publishers/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "publishers", "1"]
+						},
+						"description": "Get specific publisher by ID"
+					}
+				},
+				{
+					"name": "Create Publisher",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"New Publishing House\",\n    \"address\": \"123 Publisher Street, New York, NY 10001\",\n    \"email\": \"contact@newpublisher.com\",\n    \"phone\": \"+1-555-0123\",\n    \"website\": \"https://newpublisher.com\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/publishers",
+							"host": ["{{base_url}}"],
+							"path": ["api", "publishers"]
+						},
+						"description": "Create a new publisher"
+					}
+				},
+				{
+					"name": "Update Publisher",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Updated Publisher Name\",\n    \"email\": \"updated@publisher.com\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/publishers/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "publishers", "1"]
+						},
+						"description": "Update an existing publisher"
+					}
+				},
+				{
+					"name": "Delete Publisher",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/publishers/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "publishers", "1"]
+						},
+						"description": "Delete a publisher"
+					}
+				}
+			]
+		},
+		{
+			"name": "📂 Categories Management",
+			"description": "Category management endpoints",
+			"item": [
+				{
+					"name": "Get All Categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/categories?page=0&pageSize=10",
+							"host": ["{{base_url}}"],
+							"path": ["api", "categories"],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Get paginated list of all categories"
+					}
+				},
+				{
+					"name": "Get Category by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/categories/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "categories", "1"]
+						},
+						"description": "Get specific category by ID"
+					}
+				},
+				{
+					"name": "Create Category",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Web Development\",\n    \"description\": \"Books related to web development, frameworks, and technologies\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/categories",
+							"host": ["{{base_url}}"],
+							"path": ["api", "categories"]
+						},
+						"description": "Create a new category"
+					}
+				},
+				{
+					"name": "Update Category",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Updated Category\",\n    \"description\": \"Updated category description\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/categories/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "categories", "1"]
+						},
+						"description": "Update an existing category"
+					}
+				},
+				{
+					"name": "Delete Category",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/categories/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "categories", "1"]
+						},
+						"description": "Delete a category"
+					}
+				}
+			]
+		},
+		{
+			"name": "👥 Users Management",
+			"description": "User management endpoints",
+			"item": [
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users?page=0&pageSize=10",
+							"host": ["{{base_url}}"],
+							"path": ["api", "users"],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Get paginated list of all users (Admin/Librarian only)"
+					}
+				},
+				{
+					"name": "Get User by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "users", "1"]
+						},
+						"description": "Get specific user by ID"
+					}
+				},
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"newuser\",\n    \"email\": \"newuser@example.com\",\n    \"name\": \"New User\",\n    \"phone\": \"+1-555-0199\",\n    \"role\": \"MEMBER\",\n    \"status\": \"ACTIVE\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users",
+							"host": ["{{base_url}}"],
+							"path": ["api", "users"]
+						},
+						"description": "Create a new user (Admin only)"
+					}
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Updated User Name\",\n    \"email\": \"updated@example.com\",\n    \"phone\": \"+1-555-0299\",\n    \"role\": \"LIBRARIAN\",\n    \"status\": \"ACTIVE\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "users", "1"]
+						},
+						"description": "Update an existing user (Admin only)"
+					}
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "users", "1"]
+						},
+						"description": "Delete a user (Admin only)"
+					}
+				}
+			]
+		},
+		{
+			"name": "📖 Book Transactions",
+			"description": "Book borrowing and returning operations",
+			"item": [
+				{
+					"name": "Issue Book",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"bookCopyId\": 1,\n    \"borrowerId\": 2,\n    \"notes\": \"Book issued for research purposes\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/transactions/issue",
+							"host": ["{{base_url}}"],
+							"path": ["api", "transactions", "issue"]
+						},
+						"description": "Issue a book to a user (Librarian/Admin only)"
+					}
+				},
+				{
+					"name": "Return Book",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"bookCopyId\": 1,\n    \"returnCondition\": \"GOOD\",\n    \"notes\": \"Book returned in good condition\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/transactions/return",
+							"host": ["{{base_url}}"],
+							"path": ["api", "transactions", "return"]
+						},
+						"description": "Return a borrowed book (Librarian/Admin only)"
+					}
+				},
+				{
+					"name": "Get My Borrowed Books",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/transactions/my-books",
+							"host": ["{{base_url}}"],
+							"path": ["api", "transactions", "my-books"]
+						},
+						"description": "Get current user's borrowed books"
+					}
+				},
+				{
+					"name": "Get Transaction History",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/transactions/history?page=0&pageSize=10",
+							"host": ["{{base_url}}"],
+							"path": ["api", "transactions", "history"],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Get transaction history (Librarian/Admin only)"
+					}
+				},
+				{
+					"name": "Get Overdue Books",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/transactions/overdue",
+							"host": ["{{base_url}}"],
+							"path": ["api", "transactions", "overdue"]
+						},
+						"description": "Get list of overdue books (Librarian/Admin only)"
+					}
+				}
+			]
+		},
+		{
+			"name": "📄 Book Copies Management",
+			"description": "Manage individual book copies and their status",
+			"item": [
+				{
+					"name": "Get All Book Copies",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/book-copies?page=0&pageSize=10",
+							"host": ["{{base_url}}"],
+							"path": ["api", "book-copies"],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Get paginated list of all book copies"
+					}
+				},
+				{
+					"name": "Get Book Copy by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/book-copies/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "book-copies", "1"]
+						},
+						"description": "Get specific book copy by ID"
+					}
+				},
+				{
+					"name": "Get Copies by Book ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/book-copies/by-book/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "book-copies", "by-book", "1"]
+						},
+						"description": "Get all copies of a specific book"
+					}
+				},
+				{
+					"name": "Create Book Copy",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"bookId\": 1,\n    \"barcode\": \"BC-001-001\",\n    \"status\": \"AVAILABLE\",\n    \"isReferenceOnly\": false,\n    \"condition\": \"NEW\",\n    \"location\": \"Section A, Shelf 1\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/book-copies",
+							"host": ["{{base_url}}"],
+							"path": ["api", "book-copies"]
+						},
+						"description": "Create a new book copy (Librarian/Admin only)"
+					}
+				},
+				{
+					"name": "Update Book Copy",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"bookId\": 1,\n    \"barcode\": \"BC-001-001-UPD\",\n    \"status\": \"AVAILABLE\",\n    \"isReferenceOnly\": false,\n    \"condition\": \"GOOD\",\n    \"location\": \"Section B, Shelf 2\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/book-copies/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "book-copies", "1"]
+						},
+						"description": "Update an existing book copy (Librarian/Admin only)"
+					}
+				},
+				{
+					"name": "Delete Book Copy",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/book-copies/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "book-copies", "1"]
+						},
+						"description": "Delete a book copy (Admin only)"
+					}
+				}
+			]
+		},
+		{
+			"name": "📋 Book Requests Management",
+			"description": "Manage book requests from users",
+			"item": [
+				{
+					"name": "Get All Book Requests",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/book-requests?page=0&pageSize=10",
+							"host": ["{{base_url}}"],
+							"path": ["api", "book-requests"],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Get paginated list of all book requests (Librarian/Admin only)"
+					}
+				},
+				{
+					"name": "Get My Book Requests",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/book-requests/my-requests",
+							"host": ["{{base_url}}"],
+							"path": ["api", "book-requests", "my-requests"]
+						},
+						"description": "Get current user's book requests"
+					}
+				},
+				{
+					"name": "Get Book Request by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/book-requests/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "book-requests", "1"]
+						},
+						"description": "Get specific book request by ID"
+					}
+				},
+				{
+					"name": "Create Book Request",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"bookId\": 1,\n    \"requestReason\": \"Research purposes\",\n    \"priority\": \"MEDIUM\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/book-requests",
+							"host": ["{{base_url}}"],
+							"path": ["api", "book-requests"]
+						},
+						"description": "Create a new book request"
+					}
+				},
+				{
+					"name": "Update Book Request Status",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"APPROVED\",\n    \"adminNotes\": \"Request approved for academic research\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/book-requests/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "book-requests", "1"]
+						},
+						"description": "Update book request status (Librarian/Admin only)"
+					}
+				},
+				{
+					"name": "Delete Book Request",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/book-requests/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "book-requests", "1"]
+						},
+						"description": "Delete a book request"
+					}
+				}
+			]
+		},
+		{
+			"name": "⭐ Book Reviews Management",
+			"description": "Manage book reviews and ratings",
+			"item": [
+				{
+					"name": "Get All Reviews",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/book-reviews?page=0&pageSize=10",
+							"host": ["{{base_url}}"],
+							"path": ["api", "book-reviews"],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Get paginated list of all book reviews"
+					}
+				},
+				{
+					"name": "Get Reviews by Book ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/book-reviews/book/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "book-reviews", "book", "1"]
+						},
+						"description": "Get all reviews for a specific book"
+					}
+				},
+				{
+					"name": "Get Review by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/book-reviews/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "book-reviews", "1"]
+						},
+						"description": "Get specific review by ID"
+					}
+				},
+				{
+					"name": "Create Book Review",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"bookId\": 1,\n    \"rating\": 5,\n    \"reviewText\": \"Excellent book! Highly recommended for beginners.\",\n    \"isRecommended\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/book-reviews",
+							"host": ["{{base_url}}"],
+							"path": ["api", "book-reviews"]
+						},
+						"description": "Create a new book review (authenticated users only)"
+					}
+				},
+				{
+					"name": "Update Book Review",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"rating\": 4,\n    \"reviewText\": \"Updated: Good book, but could use more examples.\",\n    \"isRecommended\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/book-reviews/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "book-reviews", "1"]
+						},
+						"description": "Update an existing book review (review author only)"
+					}
+				},
+				{
+					"name": "Delete Book Review",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/book-reviews/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "book-reviews", "1"]
+						},
+						"description": "Delete a book review (review author or admin only)"
+					}
+				}
+			]
+		},
+		{
+			"name": "💰 Fines Management",
+			"description": "Fine management and payment operations",
+			"item": [
+				{
+					"name": "Get All Fines",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/fines?page=0&pageSize=10",
+							"host": ["{{base_url}}"],
+							"path": ["api", "fines"],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Get paginated list of all fines (Librarian/Admin only)"
+					}
+				},
+				{
+					"name": "Get Fine by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/fines/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "fines", "1"]
+						},
+						"description": "Get specific fine by ID"
+					}
+				},
+				{
+					"name": "Get My Fines",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/fines/my-fines",
+							"host": ["{{base_url}}"],
+							"path": ["api", "fines", "my-fines"]
+						},
+						"description": "Get current user's fines"
+					}
+				},
+				{
+					"name": "Get My Unpaid Fines",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/fines/my-unpaid",
+							"host": ["{{base_url}}"],
+							"path": ["api", "fines", "my-unpaid"]
+						},
+						"description": "Get current user's unpaid fines"
+					}
+				},
+				{
+					"name": "Get Overdue Fines",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/fines/overdue",
+							"host": ["{{base_url}}"],
+							"path": ["api", "fines", "overdue"]
+						},
+						"description": "Get all overdue fines (Librarian/Admin only)"
+					}
+				},
+				{
+					"name": "Create Fine",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": 2,\n    \"amount\": 10.50,\n    \"reason\": \"Late return of book\",\n    \"transactionId\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/fines",
+							"host": ["{{base_url}}"],
+							"path": ["api", "fines"]
+						},
+						"description": "Create a new fine (Librarian/Admin only)"
+					}
+				},
+				{
+					"name": "Update Fine",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"amount\": 15.00,\n    \"reason\": \"Updated fine amount for late return\",\n    \"status\": \"UNPAID\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/fines/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "fines", "1"]
+						},
+						"description": "Update an existing fine (Admin only)"
+					}
+				},
+				{
+					"name": "Pay Fine",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"paymentMethod\": \"CASH\",\n    \"amount\": 10.50\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/fines/1/pay",
+							"host": ["{{base_url}}"],
+							"path": ["api", "fines", "1", "pay"]
+						},
+						"description": "Pay a fine"
+					}
+				},
+				{
+					"name": "Delete Fine",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/fines/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "fines", "1"]
+						},
+						"description": "Delete a fine (Admin only)"
+					}
+				}
+			]
+		},
+		{
+			"name": "📋 Management Dashboard",
+			"description": "Management and analytics endpoints",
+			"item": [
+				{
+					"name": "Get Dashboard Stats",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/management/stats",
+							"host": ["{{base_url}}"],
+							"path": ["api", "management", "stats"]
+						},
+						"description": "Get basic dashboard statistics (Librarian/Admin only)"
+					}
+				},
+				{
+					"name": "Get Detailed Stats",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/management/stats/detailed",
+							"host": ["{{base_url}}"],
+							"path": ["api", "management", "stats", "detailed"]
+						},
+						"description": "Get detailed statistics (Librarian/Admin only)"
+					}
+				},
+				{
+					"name": "Get Activity Stats",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/management/stats/activity?days=7",
+							"host": ["{{base_url}}"],
+							"path": ["api", "management", "stats", "activity"],
+							"query": [
+								{
+									"key": "days",
+									"value": "7"
+								}
+							]
+						},
+						"description": "Get activity statistics for specified days (Librarian/Admin only)"
+					}
+				},
+				{
+					"name": "Get Book Stats",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/management/stats/books",
+							"host": ["{{base_url}}"],
+							"path": ["api", "management", "stats", "books"]
+						},
+						"description": "Get book-related statistics (Librarian/Admin only)"
+					}
+				},
+				{
+					"name": "Get User Stats",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/management/stats/users",
+							"host": ["{{base_url}}"],
+							"path": ["api", "management", "stats", "users"]
+						},
+						"description": "Get user-related statistics (Librarian/Admin only)"
+					}
+				},
+				{
+					"name": "Get Transaction Stats",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/management/stats/transactions",
+							"host": ["{{base_url}}"],
+							"path": ["api", "management", "stats", "transactions"]
+						},
+						"description": "Get transaction statistics (Librarian/Admin only)"
+					}
+				},
+				{
+					"name": "Get Fine Stats",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/management/stats/fines",
+							"host": ["{{base_url}}"],
+							"path": ["api", "management", "stats", "fines"]
+						},
+						"description": "Get fine statistics (Librarian/Admin only)"
+					}
+				},
+				{
+					"name": "Get Popular Books",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/management/stats/popular-books?limit=10",
+							"host": ["{{base_url}}"],
+							"path": ["api", "management", "stats", "popular-books"],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Get popular books (Librarian/Admin only)"
+					}
+				},
+				{
+					"name": "Get Recent Activities",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/management/stats/recent-activities?limit=20",
+							"host": ["{{base_url}}"],
+							"path": ["api", "management", "stats", "recent-activities"],
+							"query": [
+								{
+									"key": "limit",
+									"value": "20"
+								}
+							]
+						},
+						"description": "Get recent activities (Librarian/Admin only)"
+					}
+				},
+				{
+					"name": "Get Chart Data",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/management/analytics/chart-data?type=transactions&days=30",
+							"host": ["{{base_url}}"],
+							"path": ["api", "management", "analytics", "chart-data"],
+							"query": [
+								{
+									"key": "type",
+									"value": "transactions"
+								},
+								{
+									"key": "days",
+									"value": "30"
+								}
+							]
+						},
+						"description": "Get chart data for analytics (Librarian/Admin only)"
+					}
+				}
+			]
+		},
+		{
+			"name": "📸 File Upload",
+			"description": "Image and file upload endpoints",
+			"item": [
+				{
+					"name": "Upload Image",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/path/to/image.jpg",
+									"description": "Image file to upload"
+								},
+								{
+									"key": "type",
+									"value": "book-cover",
+									"type": "text",
+									"description": "Type of image (book-cover, profile, general)"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/upload/image",
+							"host": ["{{base_url}}"],
+							"path": ["api", "upload", "image"]
+						},
+						"description": "Upload an image file"
+					}
+				},
+				{
+					"name": "Get Uploaded Image",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/upload/images/filename.jpg",
+							"host": ["{{base_url}}"],
+							"path": ["api", "upload", "images", "filename.jpg"]
+						},
+						"description": "Get an uploaded image"
+					}
+				}
+			]
+		},
+		{
+			"name": "🔔 Notifications",
+			"description": "Notification management endpoints",
+			"item": [
+				{
+					"name": "Get My Notifications",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/notifications?page=0&pageSize=10",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notifications"],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Get current user's notifications"
+					}
+				},
+				{
+					"name": "Get Unread Notification Count",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/notifications/unread-count",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notifications", "unread-count"]
+						},
+						"description": "Get unread notification count"
+					}
+				},
+				{
+					"name": "Mark Notification as Read",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/notifications/{{notification_id}}/mark-read",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notifications", "{{notification_id}}", "mark-read"]
+						},
+						"description": "Mark a notification as read"
+					}
+				},
+				{
+					"name": "Mark All as Read",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/notifications/mark-all-read",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notifications", "mark-all-read"]
+						},
+						"description": "Mark all notifications as read"
+					}
+				}
+			]
+		},
+		{
+			"name": "� Activities Management",
+			"description": "User activity tracking and management",
+			"item": [
+				{
+					"name": "Get All Activities",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/activities?page=0&pageSize=10",
+							"host": ["{{base_url}}"],
+							"path": ["api", "activities"],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Get paginated list of all activities (Admin only)"
+					}
+				},
+				{
+					"name": "Get Activity by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/activities/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "activities", "1"]
+						},
+						"description": "Get specific activity by ID"
+					}
+				},
+				{
+					"name": "Get My Activities",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/activities/my-activities",
+							"host": ["{{base_url}}"],
+							"path": ["api", "activities", "my-activities"]
+						},
+						"description": "Get current user's activities"
+					}
+				},
+				{
+					"name": "Create Activity Log",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": 2,\n    \"action\": \"BOOK_BORROWED\",\n    \"description\": \"User borrowed Java Programming book\",\n    \"entityType\": \"BOOK\",\n    \"entityId\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/activities",
+							"host": ["{{base_url}}"],
+							"path": ["api", "activities"]
+						},
+						"description": "Create a new activity log (System/Admin only)"
+					}
+				},
+				{
+					"name": "Update Activity",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"description\": \"Updated: User borrowed Java Programming book (Advanced Edition)\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/activities/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "activities", "1"]
+						},
+						"description": "Update an activity log (Admin only)"
+					}
+				},
+				{
+					"name": "Delete Activity",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/activities/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "activities", "1"]
+						},
+						"description": "Delete an activity log (Admin only)"
+					}
+				}
+			]
+		},
+		{
+			"name": "💳 Payments Management",
+			"description": "Payment processing and management",
+			"item": [
+				{
+					"name": "Get All Payments",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/payments?page=0&pageSize=10",
+							"host": ["{{base_url}}"],
+							"path": ["api", "payments"],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Get paginated list of all payments (Admin/Librarian only)"
+					}
+				},
+				{
+					"name": "Get Payment by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/payments/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "payments", "1"]
+						},
+						"description": "Get specific payment by ID"
+					}
+				},
+				{
+					"name": "Get My Payments",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/payments/my-payments",
+							"host": ["{{base_url}}"],
+							"path": ["api", "payments", "my-payments"]
+						},
+						"description": "Get current user's payment history"
+					}
+				},
+				{
+					"name": "Create Payment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fineId\": 1,\n    \"amount\": 15.00,\n    \"paymentMethod\": \"CARD\",\n    \"description\": \"Fine payment for overdue book\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/payments",
+							"host": ["{{base_url}}"],
+							"path": ["api", "payments"]
+						},
+						"description": "Create a new payment"
+					}
+				},
+				{
+					"name": "Update Payment",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"COMPLETED\",\n    \"description\": \"Payment completed successfully\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/payments/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "payments", "1"]
+						},
+						"description": "Update payment status (Admin/Librarian only)"
+					}
+				},
+				{
+					"name": "Process Payment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"paymentMethod\": \"CARD\",\n    \"cardToken\": \"card_token_123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/payments/1/process",
+							"host": ["{{base_url}}"],
+							"path": ["api", "payments", "1", "process"]
+						},
+						"description": "Process a pending payment"
+					}
+				},
+				{
+					"name": "Refund Payment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"reason\": \"Duplicate payment\",\n    \"amount\": 15.00\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/payments/1/refund",
+							"host": ["{{base_url}}"],
+							"path": ["api", "payments", "1", "refund"]
+						},
+						"description": "Refund a payment (Admin only)"
+					}
+				}
+			]
+		},
+		{
+			"name": "�🛠️ System Health",
+			"description": "System health and debugging endpoints",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/actuator/health",
+							"host": ["{{base_url}}"],
+							"path": ["actuator", "health"]
+						},
+						"description": "Check application health status"
+					}
+				},
+				{
+					"name": "H2 Console Access",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/h2-console",
+							"host": ["{{base_url}}"],
+							"path": ["h2-console"]
+						},
+						"description": "Access H2 database console (Development only)"
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Auto-set Content-Type for JSON requests",
+					"if (pm.request.body && pm.request.body.mode === 'raw') {",
+					"    pm.request.headers.add({",
+					"        key: 'Content-Type',",
+					"        value: 'application/json'",
+					"    });",
+					"}"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Global test to check response time",
+					"pm.test('Response time is less than 5000ms', function () {",
+					"    pm.expect(pm.response.responseTime).to.be.below(5000);",
+					"});",
+					"",
+					"// Global test to check for successful responses",
+					"pm.test('Status code is success', function () {",
+					"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202, 204]);",
+					"});"
+				]
+			}
+		}
+	]
+}

@@ -1,0 +1,107 @@
+# Library Management System - Root .gitignore
+
+# Build artifacts
+backend/target/
+frontend/dist/
+frontend/dist-ssr/
+
+# Dependencies
+backend/.mvn/wrapper/maven-wrapper.jar
+frontend/node_modules/
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.iws
+*.iml
+*.ipr
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Runtime data
+backend/data/
+backend/uploads/
+*.db
+*.mv.db
+*.trace.db
+
+# Environment files (may contain sensitive data)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+.tmp/
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Java specific
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+hs_err_pid*
+
+# Maven
+target/
+.mvn/wrapper/maven-wrapper.jar
+
+# Gradle
+.gradle/
+build/
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python (if any)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Testing
+coverage/
+.nyc_output/
+test-results/
+playwright-report/
+
+# Local development
+.vscode/settings.json
+.vscode/launch.json
