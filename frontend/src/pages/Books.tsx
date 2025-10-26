@@ -7,7 +7,7 @@ import { useToast } from '../components/Toast';
 import { FiBook, FiPlus, FiEdit, FiTrash2, FiSearch, FiFilter, FiCalendar, FiUser, FiHome, FiGlobe, FiCopy } from 'react-icons/fi';
 
 // Types
-interface Book {
+interface Book { 
   id: number;
   title: string;
   isbn: string;
