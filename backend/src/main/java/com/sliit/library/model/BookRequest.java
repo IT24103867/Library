@@ -1,7 +1,7 @@
 package com.sliit.library.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.*; 
 import java.time.LocalDateTime;
 
 @Entity
