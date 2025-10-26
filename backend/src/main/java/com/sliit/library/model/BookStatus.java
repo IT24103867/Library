@@ -5,5 +5,5 @@ public enum BookStatus {
     CHECKED_OUT,
     RESERVED,
     LOST,
-    DAMAGED
+    DAMAGED 
 }
